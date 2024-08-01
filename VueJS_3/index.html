@@ -7,8 +7,26 @@
 </head>
 <body>
     <div id="app">
-        <h1>Hola {{ message }}</h1>
+        <!-- CONDICIONALES -->
+        <!-- v-text | Evita q pestañee el contenido -->
+        <!-- v-show | Oculta o muestra un elemento dependiendo de su valor -->
+        <!-- v-if   | Agrega o quita un elemento del DOM dependiendo de su valor -->
+        <!-- v-else | Muestra un valor en caso contrario del if anterior -->
+
+        <!-- <h1 v-text="'Hola ' + message"></h1> -->
+        <h1 v-if="message.length > 2">Hola <span v-text="message"></span></h1>
+        <h1 v-else>Por favor escribe tu nombre</h1>
         <input type="text" v-model="message" >
+
+        <!-- LOOPS -->
+        <h1>Lista de Tareas</h1>
+        <ul>
+            <li v-for="tarea in tareas">
+                <span v-text="tarea.title"></span>
+                <small v-if="tarea.completed"> Completa</small>
+                <small v-else> Incompleta</small>
+            </li>
+        </ul>
     </div>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -16,8 +34,12 @@
         const { createApp, ref } = Vue
         var app = createApp({
             setup() {
-                var message = ref('vue!')
+                var message = ref('')
+                const tareas = ref([{title: "Aprender PHP", completed: true},
+                {title: "Aprender Laravel", completed: false},
+                {title: "Aprender VueJS", completed: true}])
                 return {
+                    tareas,
                     message
                 }
             }
