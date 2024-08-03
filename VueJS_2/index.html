@@ -3,31 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aprendiendo VueJS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Vue2</title>
+
+    <style>
+        .bi-check2-square, .bi-square{
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <!-- CONDICIONALES -->
-        <!-- v-text | Evita q pestañee el contenido -->
-        <!-- v-show | Oculta o muestra un elemento dependiendo de su valor -->
-        <!-- v-if   | Agrega o quita un elemento del DOM dependiendo de su valor -->
-        <!-- v-else | Muestra un valor en caso contrario del if anterior -->
+    <div class="container">
+        <div id="app">
+            
+            <!-- CONDICIONALES -->
+            <div class="container">
+                <h3>Invertir texto</h3>
 
-        <!-- <h1 v-text="'Hola ' + message"></h1> -->
-        <h1 v-if="message.length > 2">Hola <span v-text="message"></span></h1>
-        <h1 v-else>Por favor escribe tu nombre</h1>
-        <input type="text" v-model="message" >
+                <!-- v-text | Evita q pestañee el contenido -->
+                <!-- v-show | Oculta o muestra un elemento dependiendo de su valor -->
+                <!-- v-if   | Agrega o quita un elemento del DOM dependiendo de su valor -->
+                <!-- v-else | Muestra un valor en caso contrario del if anterior -->
+        
+                <!-- <h1 v-text="'Hola ' + message"></h1> -->
+                <h2 v-if="message.length > 2">Hola <span v-text="message"></span></h2>
+                <h2 v-else>Por favor escribe tu nombre</h2>
+                <input type="text" v-model="message" >
+                <button @click="reverse">Invertir</button>
+            </div>
+    
+            <!-- LOOPS -->
+             <div class="container mt-3">
 
-        <!-- LOOPS -->
-        <h2>Lista de tareas</h2>
-        <ul>
-            <li v-for="tarea in tareas">
-                <span v-text="tarea.title"></span>
-                <small v-if="tarea.completed">Completa</small>
-                <small v-else>Incompleta</small>
-            </li>
-        </ul>
-         
+                 <h2>Lista de tareas</h2>
+                 <ul>
+                     <li v-for="task in tasks">
+                        <span v-text="task.title"></span>                         
+                        <span @click="task.completed = false" v-if="task.completed" class="bi bi-check2-square" style="font-size: 1rem;"></span>
+                        <span @click="task.completed = true" v-else class="bi bi-square"></span>
+                     </li>
+                     <li class="row mt-2">
+                         <div class="col-auto">
+                             <!-- v-on:keyup.enter nos permite ejecutar la funcion al precionar enter -->
+                             <input v-on:keyup.enter="addTask" v-model="newTask" type="text" class="form-control">
+                         </div>
+                         <div class="col-auto">
+                             <button @click="addTask" class="btn btn-primary">+</button>
+                         </div>
+                     </li>
+                 </ul>
+                 <pre>
+                    {{ $data }}
+                 </pre>
+             </div>
+             
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
@@ -36,11 +67,25 @@
             el: '#app',
             data: {
                 message: "",
-                tareas: [
+                newTask : "",
+                tasks: [
                     {title: "Aprender PHP", completed: true},
                     {title: "Aprender Laravel", completed: false},
                     {title: "Aprender VueJS", completed: true}
                 ]
+            },
+            methods: {
+                reverse: function(){
+                    this.message = this.message.split('').reverse().join('');
+                },
+                addTask: function(){
+                    if (this.newTask.length <= 1) return alert('La tarea no puede estar vacía');
+                    this.tasks.push({
+                        title: this.newTask,
+                        completed: false
+                    });
+                    this.newTask = "";
+                }
             }
         });
     </script>
