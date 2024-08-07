@@ -37,6 +37,8 @@
              <div class="container mt-3">
 
                  <h2>Lista de tareas</h2>
+                 <h5 v-if="completedTasks">Tareas completas: {{ completedTasks }}</h4>
+                 <h5 v-if="incompletedTasks">Tareas incompletas: {{ incompletedTasks }}</h4>
                  <ul>
                      <li v-for="task in tasks">
                         <span v-text="task.title"></span>                         
@@ -53,9 +55,6 @@
                          </div>
                      </li>
                  </ul>
-                 <pre>
-                    {{ $data }}
-                 </pre>
              </div>
              
         </div>
@@ -85,6 +84,21 @@
                         completed: false
                     });
                     this.newTask = "";
+                },
+                
+            },
+            computed: {
+                completedTasks: function(){
+                    console.log('trigger completedTask');
+                    return this.tasks.filter(function(task){
+                        return task.completed;
+                    }).length;
+                },
+                incompletedTasks: function(){
+                    console.log('trigger incompletedTask');
+                    return this.tasks.filter(function(task){
+                        return ! task.completed;
+                    }).length;
                 }
             }
         });
