@@ -38,9 +38,8 @@
                 <h5 v-if="incompletedTasks">Tareas incompletas: {{ incompletedTasks }}</h4>
                 <ul>
                     <li v-for="task in tasks">
-                        <span v-text="task.title"></span>                         
-                        <span @click="task.completed = false" v-if="task.completed" class="bi bi-check2-square" style="font-size: 1rem;"></span>
-                        <span @click="task.completed = true" v-else class="bi bi-square"></span>
+                        <span v-text="task.title"></span>
+                        <span @click="completeTask(task)" :class="taskClasses(task)"></span>
                      </li>
                      <li class="row mt-2">
                          <div class="col-auto">
@@ -81,15 +80,21 @@
                     newTask.value = "";
                 }
 
+                function taskClasses(task) {
+                    console.log('css changed');
+                    return ['bi', task.completed ? 'bi-check2-square' : 'bi-square'];
+                }
+                function completeTask(task) {
+                    return task.completed = ! task.completed;
+                }
+
                 const completedTasks = computed(() => {
-                    console.log('trigger completedTask');
                     return tasks.value.filter((task) =>
                         task.completed
                     ).length
                 })
 
                 const incompletedTasks = computed(() => {
-                    console.log('trigger incompletedTask');
                     return tasks.value.filter((task) =>
                         !task.completed
                     ).length
@@ -101,6 +106,8 @@
                     newTask,
                     reverseMessage,
                     addTask,
+                    taskClasses,
+                    completeTask,
                     completedTasks,
                     incompletedTasks
                 }
